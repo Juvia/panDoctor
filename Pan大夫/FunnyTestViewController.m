@@ -28,6 +28,8 @@
 #define ansHeight (((FrameH > 567) && (FrameH < 569))? 36 * ratio5:(((FrameH > 666) && (FrameH < 668))? 36 * ratio6 : (((FrameH > 735) && (FrameH < 737))? 36 : 36 * ratio5)))
 #define leftLike (((FrameH > 567) && (FrameH < 569))? 63 * ratio5:(((FrameH > 666) && (FrameH < 668))? 63 * ratio6 : (((FrameH > 735) && (FrameH < 737))? 63 : 63 * ratio5)))
 #define titleFont (((FrameH > 567) && (FrameH < 569))? 13:(((FrameH > 666) && (FrameH < 668))? 15 : (((FrameH > 735) && (FrameH < 737))? 17 : 13)))
+#define offset5 (((FrameH > 567) && (FrameH < 569))? 21:(((FrameH > 666) && (FrameH < 668))? 24 : (((FrameH > 735) && (FrameH < 737))? 21 : 21)))
+#define offset15 (((FrameH > 567) && (FrameH < 569))? -12:(((FrameH > 666) && (FrameH < 668))? 17 : (((FrameH > 735) && (FrameH < 737))? 42 : -12)))
 
 @interface FunnyTestViewController ()
 
@@ -37,6 +39,7 @@
 @property (strong , nonatomic) UIView *headBackground;
 @property (strong , nonatomic) UIImageView *pictureView;
 @property (strong , nonatomic) UITextView *explainView;
+@property (strong , nonatomic) UIWebView *gifView;
 
 @property (strong , nonatomic) UILabel *LabelA;
 @property (strong , nonatomic) UILabel *LabelB;
@@ -72,7 +75,7 @@
 
 @implementation FunnyTestViewController
 
-@synthesize scrollView, numLabel, headView, pictureView, explainView, LabelA, LabelB, LabelC, LabelD, choiceAButton, choiceBButton, choiceCButton, choiceDButton, ansButton, choice, funnyTestans, ansA, ansB, ansC, ansD, prin, picHeight, likeButton, shareButton, view1, view2, heart, share, Index, headBackground, LabelE, LabelF, choiceEButton, choiceFButton, delegate;
+@synthesize scrollView, numLabel, headView, pictureView, explainView, LabelA, LabelB, LabelC, LabelD, choiceAButton, choiceBButton, choiceCButton, choiceDButton, ansButton, choice, funnyTestans, ansA, ansB, ansC, ansD, prin, picHeight, likeButton, shareButton, view1, view2, heart, share, Index, headBackground, LabelE, LabelF, choiceEButton, choiceFButton, delegate, gifView;
 
 -(id)initWithHead:(NSString *)head picture:(UIImage *)picture explain:(NSString *)explain index:(int)index{
     Index = index;
@@ -120,6 +123,36 @@
     [scrollView addSubview:headView];
     [scrollView addSubview:pictureView];
     [scrollView addSubview:explainView];
+    
+    
+    if (index == 4) {
+       // gifView = [[UIWebView alloc] initWithFrame:CGRectMake(([[UIScreen mainScreen] bounds].size.width - picWidth) / 2, picGap, picWidth, picHeight)];
+        gifView = [[UIWebView alloc] initWithFrame:CGRectMake(offset5, picGap, [[UIScreen mainScreen] bounds].size.width - offset5 * 2, picHeight)];
+        NSString *string =  [[NSString alloc] initWithFormat:@"%@%d", @"pic", index + 1];
+        NSData *gif = [NSData dataWithContentsOfFile: [[NSBundle mainBundle] pathForResource:string ofType:@"gif"]];
+        // view生成
+        gifView.userInteractionEnabled = NO;//用户不可交互
+        gifView.scalesPageToFit = YES;
+        //gifView.autoresizesSubviews = NO;
+        [gifView loadData:gif MIMEType:@"image/gif" textEncodingName:nil baseURL:nil];
+        [scrollView addSubview:gifView];
+    }
+    
+    if (index == 14) {
+        //gifView = [[UIWebView alloc] initWithFrame:CGRectMake(([[UIScreen mainScreen] bounds].size.width - picWidth) / 2, picGap, picWidth, picHeight)];
+        gifView = [[UIWebView alloc] initWithFrame:CGRectMake(- (offset15), picGap, [[UIScreen mainScreen] bounds].size.width + (offset15 * 2), picHeight)];
+        NSString *string =  [[NSString alloc] initWithFormat:@"%@%d", @"pic", index + 1];
+        NSData *gif = [NSData dataWithContentsOfFile: [[NSBundle mainBundle] pathForResource:string ofType:@"gif"]];
+        // view生成
+        gifView.userInteractionEnabled = NO;//用户不可交互
+        gifView.scalesPageToFit = YES;
+        //gifView.autoresizesSubviews = NO;
+        [gifView loadData:gif MIMEType:@"image/gif" textEncodingName:nil baseURL:nil];
+        [scrollView addSubview:gifView];
+    }
+    
+    
+    
     
     likeButton = [[UIButton alloc]initWithFrame:CGRectMake(0, [[UIScreen mainScreen] bounds].size.height - 64, [[UIScreen mainScreen] bounds].size.width / 2, 64)];
     shareButton = [[UIButton alloc]initWithFrame:CGRectMake([[UIScreen mainScreen] bounds].size.width / 2, [[UIScreen mainScreen] bounds].size.height - 64, [[UIScreen mainScreen] bounds].size.width / 2, 64)];
